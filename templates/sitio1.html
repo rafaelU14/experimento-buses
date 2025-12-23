@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Datos Experimento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-bg': '#1a202c',
+                        'dark-card': '#2d3748',
+                        'dark-text': '#e2e8f0',
+                        'dark-input': '#4a5568',
+                        'primary-blue': '#63b3ed',
+                        'primary-hover': '#4299e1',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-bg min-h-screen p-4 sm:p-8 text-dark-text">
+
+    <div class="form-container bg-dark-card shadow-2xl rounded-xl p-6 sm:p-10 max-w-2xl mx-auto border border-gray-700 mb-10">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-8 text-center border-b border-primary-blue pb-3">
+            Datos de Viaje en Bus
+        </h1>
+        
+        <form action="/procesar-datos" method="POST" class="space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium mb-1">📅 Fecha:</label>
+                    <input type="date" name="fecha" required class="w-full p-3 rounded-lg bg-dark-input border border-gray-600 text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">☀️ Día:</label>
+                    <select name="dia" required class="w-full p-3 rounded-lg bg-dark-input border border-gray-600 text-white">
+                        <option value="Lunes">Lunes</option>
+                        <option value="Martes">Martes</option>
+                        <option value="Miércoles">Miércoles</option>
+                        <option value="Jueves">Jueves</option>
+                        <option value="Viernes">Viernes</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium mb-1">⏱️ Salida:</label>
+                    <input type="time" name="hora_salida" required class="w-full p-3 rounded-lg bg-dark-input border border-gray-600 text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">⏱️ Llegada:</label>
+                    <input type="time" name="hora_llegada" required class="w-full p-3 rounded-lg bg-dark-input border border-gray-600 text-white">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-sm font-medium mb-1">🌡️ Temp (°C):</label>
+                    <input type="number" name="temperatura" step="0.1" required class="w-full p-3 rounded-lg bg-dark-input border border-gray-600 text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">💧 Lluvia:</label>
+                    <select name="precipitaciones" required class="w-full p-3 rounded-lg bg-dark-input border border-gray-600 text-white">
+                        <option value="1">Ninguna</option>
+                        <option value="3">Moderada</option>
+                        <option value="5">Fuerte</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">👁️ Visibilidad:</label>
+                    <select name="visibilidad" required class="w-full p-3 rounded-lg bg-dark-input border border-gray-600 text-white">
+                        <option value="1">Oscuro</option>
+                        <option value="3">Luz del día</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">👥 Ocupación:</label>
+                <select name="ocupacion" required class="w-full p-3 rounded-lg bg-dark-input border border-gray-600 text-white">
+                    <option value="1">Vacío</option>
+                    <option value="3">Gente de pie</option>
+                    <option value="5">Lleno</option>
+                </select>
+            </div>
+
+            <button type="submit" class="w-full py-3 bg-primary-blue text-white font-bold rounded-lg hover:bg-primary-hover transition duration-300">
+                💾 Guardar en Base de Datos
+            </button>
+        </form>
+    </div>
+
+    <div class="max-w-4xl mx-auto bg-dark-card p-6 rounded-xl border border-gray-700">
+        <h2 class="text-2xl font-bold mb-4">Registros Guardados</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-gray-600">
+                        <th class="p-2">Fecha</th>
+                        <th class="p-2">Día</th>
+                        <th class="p-2">Salida</th>
+                        <th class="p-2">Llegada</th>
+                        <th class="p-2">Temp</th>
+                        <th class="p-2">Ocupación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for trip in trips %}
+                    <tr class="border-b border-gray-700 hover:bg-gray-700/50">
+                        <td class="p-2">{{ trip.fecha }}</td>
+                        <td class="p-2">{{ trip.dia }}</td>
+                        <td class="p-2">{{ trip.hora_salida }}</td>
+                        <td class="p-2">{{ trip.hora_llegada }}</td>
+                        <td class="p-2">{{ trip.temperatura }}°C</td>
+                        <td class="p-2">{{ trip.ocupacion }}/5</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
